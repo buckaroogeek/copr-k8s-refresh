@@ -31,3 +31,11 @@ go2rpm -f github.com/kubernetes/kubernetes k8s.io/kubernetes
 See https://frostyx.cz/posts/copr-docker-compose-without-supervisord for reasonably current instructions on setting up a local COPR instance on a Fedora-based workstation. Podman and podman-compose work well as replacements for docker and docker-compose us sed in the post.
 
 The Fedora COPR project is https://copr.fedorainfracloud.org/coprs/buckaroogeek/Kubernetes-Refresh/.
+
+## Useful Links
+
+Upstream: https://kubernetes.io
+
+The repository for the Fedora Kubernetes package is https://src.fedoraproject.org/rpms/kubernetes.
+
+The repository for the Fedora Kubernetes module is https://src.fedoraproject.org/modules/kubernetes.
