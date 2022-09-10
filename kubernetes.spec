@@ -6,16 +6,6 @@
 %global forgeurl        https://github.com/kubernetes/kubernetes
 Version:                1.25.1-rc.0
 
-# REMOVE BEFORE SUBMITTING THIS FOR REVIEW
-# ---
-# New Fedora packages should use %%gometa -f, which makes the package
-# ExclusiveArch to %%golang_arches_future and thus excludes the package from
-# %%ix86. If the new package is needed as a dependency for another pacage,
-# please consider removing that package from %%ix86 in the same way, instead of
-# building more go packages for i686. If your package is not a leaf package,
-# you'll need to coordinate the removal of the package's dependents first.
-# ---
-# REMOVE BEFORE SUBMITTING THIS FOR REVIEW
 %gometa -f
 
 %global common_description %{expand:
