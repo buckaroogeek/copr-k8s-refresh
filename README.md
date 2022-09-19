@@ -34,30 +34,6 @@ See https://frostyx.cz/posts/copr-docker-compose-without-supervisord for reasona
 
 The Fedora COPR project is https://copr.fedorainfracloud.org/coprs/buckaroogeek/Kubernetes-Refresh/.
 
-## Podman Notes
-
-As noted above podman-compose and podman can be used to run COPR locally if you are interested. I chose to run COPR locally so I could experiment with configurations and build process before consuming resources on Fedora COPR. If you also have the git repository containing the spec file hosted locally and need to use ssh transport for git, then there are a couple of additional steps needed. Since COPR is running in a container, root is the user id not yours even though podman is running in rootless mode.
-
-To enable COPR access to your local git repo, start COPR (podman-compose up -d) and then open a shell on copr_build34_1:
-
-```
-podman exec -it copr_builder_1 bash
-```
-
-In the shell, follow the usual steps to create an ssh key, add the new public key to your workstation using ssh-copy-id, and, while still in the container shell, add the key and passphrase to the local keyring.
-
-```
-ssh-keygen -t ed25519 -C "user@host"
-ssh-copy-id -f user@host
-ssh-add ~/.ssh/id_ed25519
-```
-
-COPR will be able to use git clone URLs such as:
-
-```
-user@host:/path/to/repo
-```
-
 ## Useful Links
 
 Upstream: https://kubernetes.io
