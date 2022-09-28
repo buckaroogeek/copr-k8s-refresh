@@ -117,15 +117,16 @@ export KUBE_EXTRA_GOPATH=$(pwd)/Godeps/_workspace
 
 # Build each binary separately to generate a unique build-id.
 # Otherwise: Duplicate build-ids /builddir/build/BUILDROOT/.../usr/bin/kube-apiserver and /builddir/build/BUILDROOT/.../usr/bin/kubeadm
+# CHANGE - added all to make
 make all WHAT="cmd/kubelet"
 make all WHAT="cmd/kubeadm"
 make all WHAT="cmd/kubectl"
 
 # Gen docs
-make WHAT="cmd/gendocs"
-make WHAT="cmd/genkubedocs"
-make WHAT="cmd/genman"
-make WHAT="cmd/genyaml"
+make all WHAT="cmd/gendocs"
+make all WHAT="cmd/genkubedocs"
+make all WHAT="cmd/genman"
+make all WHAT="cmd/genyaml"
 kube::util::gen-docs .
 
 
@@ -147,9 +148,10 @@ install -p -m 755 -t %{buildroot}%{_bindir} ${output_path}/kubelet
 install -p -m 755 -t %{buildroot}%{_bindir} ${output_path}/kubeadm
 install -p -m 755 -t %{buildroot}%{_bindir} ${output_path}/kubectl
 
-echo "+++ INSTALLING kubelet service config"
-install -d -m 0755 %{buildroot}/%{_sysconfdir}/systemd/system/kubelet.service.d
-install -p -m 0644 -t %{buildroot}/%{_sysconfdir}/systemd/system/kubelet.service.d %{SOURCE114}
+# kubeadm configuration file
+echo "+++ INSTALLING kubeadm config"
+install -d -m 0755 %{buildroot}/%{_unitdir}/kubelet.service.d
+install -p -m 0644 -t %{buildroot}/%{_unitdir}/kubelet.service.d %{SOURCE114}
 
 echo "+++ INSTALLING shell completion"
 install -d -m 0755 %{buildroot}%{_datadir}/bash-completion/completions/
@@ -159,10 +161,12 @@ install -d -m 0755 %{buildroot}%{_datadir}/zsh-completion/completions/
 install -d -m 0755 %{buildroot}%{_datadir}/fish-completion/completions/
 %{buildroot}%{_bindir}/kubectl completion fish > %{buildroot}%{_datadir}/fish-completion/completions/kubectl
 
-echo "+++ INSTALLING config files"
-%define remove_environ_prefix() %(echo -n %1|sed 's/.*environ-//g')
+echo "+++ CREATING manifests directory"
 install -d -m 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -d -m 0700 %{buildroot}%{_sysconfdir}/%{name}/manifests
+
+echo "+++ INSTALLING config files"
+%define remove_environ_prefix() %(echo -n %1|sed 's/.*environ-//g')
 install -m 644 -T %{SOURCE107} %{buildroot}%{_sysconfdir}/%{name}/%{remove_environ_prefix %{SOURCE107}}
 install -m 644 -T %{SOURCE109} %{buildroot}%{_sysconfdir}/%{name}/%{remove_environ_prefix %{SOURCE109}}
 install -m 644 -T %{SOURCE110} %{buildroot}%{_sysconfdir}/%{name}/%{remove_environ_prefix %{SOURCE110}}
@@ -226,8 +230,6 @@ fi
 %{_mandir}/man1/kubelet.1*
 %{_mandir}/man1/kube-proxy.1*
 %{_bindir}/kubelet
-%{_bindir}/kube-proxy
-%{_unitdir}/kube-proxy.service
 %{_unitdir}/kubelet.service
 %{_sysusersdir}/%{name}.conf
 %dir %{_sharedstatedir}/kubelet
@@ -258,6 +260,26 @@ fi
 %{_datadir}/bash-completion/completions/kubectl
 %{_datadir}/zsh-completion/completions/kubectl
 %{_datadir}/fish-completion/completions/kubectl
+
+############################################
+
+%pre
+%sysusers_create_compat %{SOURCE116}
+
+%post
+%systemd_post kubelet
+# If accounting is not currently enabled systemd reexec
+if [[ `systemctl show kubelet | grep -q -e CPUAccounting=no -e MemoryAccounting=no; e
+cho $?` -eq 0 ]]; then
+  systemctl daemon-reexec
+fi
+
+%preun
+%systemd_preun kubelet
+
+%postun
+%systemd_postun kubelet
+
 
 ############################################
 ############################################
