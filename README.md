@@ -47,45 +47,8 @@ Upstream Kubernetes changes the go language version for a given Kubernetes relea
 ## Workflow
 
 1. Use the repository issue tracker to post questions, bugs, and issues that need resolution.
-
 1. COPR is used as the build engine until the revised spec file is formally moved to Fedora Package Sources (https://src.fedoraproject.org/rpms/kubernetes) and incorporated into Fedora.
 
-## COPR
-
-See https://frostyx.cz/posts/copr-docker-compose-without-supervisord for reasonably current instructions on setting up a local COPR instance on a Fedora-based workstation. Podman and podman-compose work well as replacements for docker and docker-compose used in the post.
-
-A local, container-based instance of COPR cannot connect to a local github repository when using the git ```user@host:/path/to/repo``` clone URL pattern. One solution is to modify the COPR docker-compose.yaml file and share the host machine's SSH agent. Add to the builder container in docker-compose.yaml the following lines (see also https://medium.com/@vanuan/ssh-and-docker-compose-7bce10b67765):
-
-```
-...
-environment:
-  SSH_AUTH_SOCK: $SSH_AUTH_SOCK
-  ...
-volumes:
-  - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
-...
-```
-
-The result should look something like:
-
-```
-...
-  builder:
-    build:
-      context: docker/builder
-    hostname: builder
-    stdin_open: true
-    tty: true
-    privileged: true
-    environment:
-      SSH_AUTH_SOCK: $SSH_AUTH_SOCK
-    volumes:
-      - .:/opt/copr:z
-      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK:z
-...
-```
-
-The Fedora COPR project is https://copr.fedorainfracloud.org/coprs/buckaroogeek/Kubernetes-Refresh/.
 
 ## Useful Links
 
