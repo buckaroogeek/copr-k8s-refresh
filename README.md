@@ -13,14 +13,14 @@ We aim to provide first class support for Kubernetes packages in Fedora. Package
 
 We also aim to provide parallel installs of all supported versions of Kubernetes available for a current release of Fedora. The go language is the used to developKubernetes with each Kubernetes release based on a specific version of go (magor:minor version). Each release of Fedora has a specific version of go. Fedora 36, for example, provides go 1.18.x and Fedora 37 provides go 1.19.x. The goal for Kubernetes then would be to provide a default version of Kubernetes that aligns with the go version, and parallel installable versions of earlier kubernetes releases that are still supported.
 
-Example Availability Matrix. Each Fedora release annotated with the go version available. D - default; A- available parallel version; -- - absent.
+Example Availability Matrix. Each Fedora release annotated with the go version available. D - default; A- available parallel version; O - obsolete; -- - absent.
 
 | Kubernetes Version | K8s Go Version | F38 (1.20) | F37 (1.19) | F36 (1.18) |
 | :--- | --- | --- | --- | ---: |
-| 1.26 | 1.20 (1.19) | P | -- | -- | 
-| 1.25 | 1.19 | A | P | -- |
-| 1.24 | 1.18 | A | A | P |
-| 1.23 | 1.17 | -- | A | A |
+| 1.26 | 1.20 (1.19) | D | -- | -- | 
+| 1.25 | 1.19 | A | D | -- |
+| 1.24 | 1.18 | A | A | D |
+| 1.23 | 1.17 | O | A | A |
 
 
 ## Initialization
