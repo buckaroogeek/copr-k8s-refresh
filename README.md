@@ -5,22 +5,25 @@ Revise kuberntes spec file for Fedora
 
 ## Motivation
 
-The current kubernetes spec file used to generate the kubernetes rpms in Fedora contains a number of artifacts that may no longer be useful or needed. The current maintainers also recognize that several improvements to the kubernetes rpms in Fedora are needed and decided to start from a fresh foundation using the go2rpm utility, inspiration from other golang projects, the existing kubernetes spec file, and the upstream spec files.
+There are two primary drivers that mandate a revision of the kubernetes spec file used in Fedora. First, multiple versions of Kubernetes will be generated for each release of Fedora following the [Multiple packages with the same base name](https://docs.fedoraproject.org/en-US/packaging-guidelines/Naming/#multiple) standard. The spec file will be revised with automation in mind similar to that used for nodejs packages. 
+
+Second, The current kubernetes spec file contains a number of artifacts that may no longer be useful or needed. 
 
 ## Goals
 
 We aim to provide first class support for Kubernetes packages in Fedora. Packages that allow Fedora machines, whether physical or virtual, to be used as host OS in Kubernetes clusters. This explicitly includes Fedora CoreOS. 
 
-We also aim to provide parallel installs of all supported versions of Kubernetes available for a current release of Fedora. The go language is the used to developKubernetes with each Kubernetes release based on a specific version of go (magor:minor version). Each release of Fedora has a specific version of go. Fedora 36, for example, provides go 1.18.x and Fedora 37 provides go 1.19.x. The goal for Kubernetes then would be to provide a default version of Kubernetes that aligns with the go version, and parallel installable versions of earlier kubernetes releases that are still supported.
+We also aim to provide packages of all supported versions of Kubernetes available for a current release of Fedora. The go language is the used to develop Kubernetes with each Kubernetes release based on a specific version of go (major:minor version). Each release of Fedora has a specific version of go. Fedora 36, for example, provides go 1.18.x and Fedora 37 provides go 1.19.x. The goal for Kubernetes then would be to provide a default version of Kubernetes that aligns with the go version, and parallel installable versions of other Kubernetes releases that are still supported.
 
 Example Availability Matrix. Each Fedora release annotated with the go version available. D - default; A- available parallel version; O - obsolete; -- - absent.
 
-| Kubernetes Version | K8s Go Version | F38 (1.20) | F37 (1.19) | F36 (1.18) |
+| Kubernetes Version | K8s Go Version | F39 (1.21) | F38 (1.20) | F37 (1.19) |
 | :--- | --- | --- | --- | ---: |
-| 1.26 | 1.20 (1.19) | D | -- | -- | 
-| 1.25 | 1.19 | A | D | -- |
-| 1.24 | 1.18 | A | A | D |
-| 1.23 | 1.17 | O | A | A |
+| 1.28 | 1.20 | D | -- | -- |
+| 1.27 | 1.20 | A | A | -- |
+| 1.26 | 1.20 (1.19) | A | D | -- |
+| 1.25 | 1.19 | A | A | D |
+| 1.24 | 1.18 | A | A | A |
 
 
 ## Requirements
