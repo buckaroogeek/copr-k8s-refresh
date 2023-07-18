@@ -18,10 +18,10 @@ We also aim to provide packages of all supported versions of Kubernetes availabl
 Example Availability Matrix. Each Fedora release annotated with the go version available. D - default; A- available parallel version; O - obsolete; -- - absent.
 
 | Kubernetes Version | K8s Go Version | F39 (1.21) | F38 (1.20) | F37 (1.19) |
-| :--- | --- | --- | --- | ---: |
+| --- | --- | --- | --- | --- |
 | 1.28 | 1.20 | D | -- | -- |
 | 1.27 | 1.20 | A | A | -- |
-| 1.26 | 1.20 (1.19) | A | D | -- |
+| 1.26 | 1.20 | A | D | -- |
 | 1.25 | 1.19 | A | A | D |
 | 1.24 | 1.18 | A | A | A |
 
