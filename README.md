@@ -30,9 +30,9 @@ Example Availability Matrix. Each Fedora release annotated with the go version a
 
 1. Provide a default version of Kubernetes for each Fedora release (see also transition notes below). The default version of Kubernetes is the most current release available when the Fedora release reaches General Availability (GA). The Kubernetes version must also be compatible with the Go language version that is default for the Fedora release. Specifically, the Go version must satisfy the `BuildRequires golang >= xxxx``` constraint where ```xxx``` is the 'built with' Go version for Kubernetes.
 1. Provide alternate versions of Kubernetes for each Fedora release, where the alternate version is still supported upstream and based on a version of the go language that satisfies the BuildRequires constraint.
-1. For Fedora node in a Kubernetes cluster, only one version of Kubernetes is expected to be installed.
+1. For Fedora node in a Kubernetes cluster, only one version of Kubernetes is expected to be installed. Alternate version packages will include symlinks to unversioned binary names. These symlinks will force dnf/rpm to reject installing both default and alternate or multiple alternates (except for the client - see below).
 1. For Fedora machines used to host the Kubernetes command line client (kubectl) multiple versions of the client package could be installed so that the user can manage multiple Kubernetes clusters with differing versions.
-1. (provisional) Provide an environment-module configuration to enable a standard mechanism for switching between kubectl versions.
+1. ~~(provisional) Provide an environment-module configuration to enable a standard mechanism for switching between kubectl versions.~~ kubernetes-client will not include symlinks from alternate version to ...bin/kubectl.
 
 ## Transition Guidelines
 
