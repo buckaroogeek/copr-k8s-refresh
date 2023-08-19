@@ -1,17 +1,17 @@
 COPR-K8S-REFRESH
 ================
 
-Revise kuberntes spec file for Fedora
+Revise Kubernetes spec file for Fedora
 
 ## Motivation
 
-There are two primary drivers that mandate a revision of the kubernetes spec file used in Fedora. First, multiple versions of Kubernetes will be generated for each release of Fedora following the [Multiple packages with the same base name](https://docs.fedoraproject.org/en-US/packaging-guidelines/Naming/#multiple) standard. The spec file will be revised with automation in mind similar to that used for nodejs packages. 
+Two primary drivers mandate a revision of the Kubernetes spec file used in Fedora. First, multiple versions of Kubernetes will be generated for each release of Fedora following the [Multiple packages with the same base name](https://docs.fedoraproject.org/en-US/packaging-guidelines/Naming/#multiple) standard. The spec file will be revised with automation in mind similar to that used for nodejs packages.
 
-Second, The current kubernetes spec file contains a number of artifacts that may no longer be useful or needed. 
+Second, The current Kubernetes spec file contains a number of artifacts that may no longer be useful or needed.
 
 ## Goals
 
-We aim to provide first class support for Kubernetes packages in Fedora. Packages that allow Fedora machines, whether physical or virtual, to be used as host OS in Kubernetes clusters. This explicitly includes Fedora CoreOS. 
+We aim to provide first class support for Kubernetes packages in Fedora. Packages that allow Fedora machines, whether physical or virtual, to be used as host OS in Kubernetes clusters. This explicitly includes Fedora CoreOS.
 
 We also aim to provide packages of all supported versions of Kubernetes available for a current release of Fedora. The go language is the used to develop Kubernetes with each Kubernetes release based on a specific version of go (major:minor version). Each release of Fedora has a specific version of go. Fedora 36, for example, provides go 1.18.x and Fedora 37 provides go 1.19.x. The goal for Kubernetes then would be to provide a default version of Kubernetes that aligns with the go version, and parallel installable versions of other Kubernetes releases that are still supported.
 
@@ -28,11 +28,11 @@ Example Availability Matrix. Each Fedora release annotated with the go version a
 
 ## Requirements
 
-1. Provide a default version of Kubernetes for each Fedora release (see also tranistion notes below). The default version of Kubernetes is the most current release that utilizes the same go language version that is default for the Fedora release.
-1. Provide alternate versions of Kubernetes for each Fedora release, where the alternate version is still supported upstream and based on a version of the go language that can be compiled using the Fedora version of go.
+1. Provide a default version of Kubernetes for each Fedora release (see also transition notes below). The default version of Kubernetes is the most current release available when the Fedora release reaches General Availability (GA). The Kubernetes version must also be compatible with the Go language version that is default for the Fedora release. Specifically, the Go version must satisfy the `BuildRequires golang >= xxxx``` constraint where ```xxx``` is the 'built with' Go version for Kubernetes.
+1. Provide alternate versions of Kubernetes for each Fedora release, where the alternate version is still supported upstream and based on a version of the go language that satisfies the BuildRequires constraint.
 1. For Fedora node in a Kubernetes cluster, only one version of Kubernetes is expected to be installed.
 1. For Fedora machines used to host the Kubernetes command line client (kubectl) multiple versions of the client package could be installed so that the user can manage multiple Kubernetes clusters with differing versions.
-1. (provisional) Provide environment-module files to enable easy switching between kubectl versions.
+1. (provisional) Provide an environment-module configuration to enable a standard mechanism for switching between kubectl versions.
 
 ## Transition Guidelines
 
@@ -44,7 +44,7 @@ Versions of the go language and Fedora and Kubernetes do not synchronize. During
 Upstream Kubernetes changes the go language version for a given Kubernetes release. The following guidelines will apply in this scenario.
 
 1. The version of go is unchanged in Fedora but not current enough for Kubernetes. Work with the go maintainers in Fedora and create COPR repositories for these new versions of Kubernetes.
-1. The major:minor version of go is updated in a Fedora release and current enough for Kuberentes. Synchronize updated packages with the release of the new version of go.
+1. The major:minor version of go is updated in a Fedora release and current enough for Kubernetes. Synchronize updated packages with the release of the new version of go.
 
 ## Workflow
 
