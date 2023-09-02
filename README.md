@@ -11,7 +11,7 @@ Second, The current Kubernetes spec file contains a number of artifacts that may
 
 ## Goals
 
-We aim to provide first class support for Kubernetes packages in Fedora. Packages that allow Fedora machines, whether physical or virtual, to be used as host OS in Kubernetes clusters. This explicitly includes Fedora CoreOS.
+Provide first class support for Kubernetes packages in Fedora. Packages that allow Fedora machines, whether physical or virtual, to be used as host OS in Kubernetes clusters. This explicitly includes Fedora CoreOS.
 
 We also aim to provide packages of all supported versions of Kubernetes available for a current release of Fedora. The go language is the used to develop Kubernetes with each Kubernetes release based on a specific version of go (major:minor version). Each release of Fedora has a specific version of go. Fedora 36, for example, provides go 1.18.x and Fedora 37 provides go 1.19.x. The goal for Kubernetes then would be to provide a default version of Kubernetes that aligns with the go version, and parallel installable versions of other Kubernetes releases that are still supported.
 
@@ -28,11 +28,12 @@ Example Availability Matrix. Each Fedora release annotated with the go version a
 
 ## Requirements
 
-1. Provide a default version of Kubernetes for each Fedora release (see also transition notes below). The default version of Kubernetes is the most current release available when the Fedora release reaches General Availability (GA). The Kubernetes version must also be compatible with the Go language version that is default for the Fedora release. Specifically, the Go version must satisfy the `BuildRequires golang >= xxxx``` constraint where ```xxx``` is the 'built with' Go version for Kubernetes.
+1. No longer provide a default version of Kubernetes for each Fedora release (see also transition notes below). 
 1. Provide alternate versions of Kubernetes for each Fedora release, where the alternate version is still supported upstream and based on a version of the go language that satisfies the BuildRequires constraint.
-1. For Fedora node in a Kubernetes cluster, only one version of Kubernetes is expected to be installed. Alternate version packages will include symlinks to unversioned binary names. These symlinks will force dnf/rpm to reject installing both default and alternate or multiple alternates (except for the client - see below).
-1. For Fedora machines used to host the Kubernetes command line client (kubectl) multiple versions of the client package could be installed so that the user can manage multiple Kubernetes clusters with differing versions.
+1. For Fedora node in a Kubernetes cluster, only one version of Kubernetes can beinstalled. Alternate version packages will include symlinks to unversioned binary names. These symlinks will force dnf/rpm to reject installing more than one package (except for the client - see below).
+1. The spec file will generate two (2) versions of the commandline sub-package. One version is the sibling to other sub-packages. This version will allow one one client per host. The second version of the command line client will Require EnvironmentModules and allow for multitple clients on a host. Environment module is needed to set the default value in the shell. For Fedora machines used to host the Kubernetes command line client (kubectl) multiple versions of the client package could be installed so that the user can manage multiple Kubernetes clusters with differing versions.
 1. ~~(provisional) Provide an environment-module configuration to enable a standard mechanism for switching between kubectl versions.~~ kubernetes-client will not include symlinks from alternate version to ...bin/kubectl.
+1. Potentially drop the service subpackages from the alternates?
 
 ## Transition Guidelines
 
@@ -51,6 +52,9 @@ Upstream Kubernetes changes the go language version for a given Kubernetes relea
 1. Use the repository issue tracker to post questions, bugs, and issues that need resolution.
 1. COPR is used as the build engine until the revised spec file is formally moved to Fedora Package Sources (https://src.fedoraproject.org/rpms/kubernetes) and incorporated into Fedora.
 
+## Steps
+
+1. modify spec file to meet goals of [Kubernetes Package Restructure change request](https://discussion.fedoraproject.org/t/f40-change-proposal-restructure-kubernetes-packages/87806) for F40. Goal with this request is to alter structure and organization of subpackages. 
 
 ## Useful Links
 
